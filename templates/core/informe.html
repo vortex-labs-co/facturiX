@@ -14,7 +14,7 @@
     <tr><td>Facturado</td><td>${{ total_facturas }}</td></tr>
     <tr><td>Cuentas de cobro</td><td>${{ total_cuentas }}</td></tr>
     <tr><td>Gastos</td><td>${{ total_gastos }}</td></tr>
-    <tr class="total-row"><td><strong>Balance</strong></td><td><strong>${{ total_facturas|add:total_cuentas }} gastos ${{ total_gastos }}</strong></td></tr>
+    <tr class="total-row"><td><strong>Balance (facturado − gastos)</strong></td><td><strong>${{ balance }}</strong></td></tr>
   </tbody>
 </table>
 <h3 style="margin:20px 0 10px">Facturas del periodo</h3>

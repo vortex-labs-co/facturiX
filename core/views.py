@@ -181,4 +181,5 @@ def informe(request):
         'total_facturas': facturas.aggregate(t=Sum('valor'))['t'] or 0,
         'total_cuentas': cuentas.aggregate(t=Sum('valor'))['t'] or 0,
         'total_gastos': gastos.aggregate(t=Sum('valor'))['t'] or 0,
+        'balance': (facturas.aggregate(t=Sum('valor'))['t'] or 0) - (gastos.aggregate(t=Sum('valor'))['t'] or 0),
     })
