@@ -85,6 +85,7 @@ if DATABASE_URL:
             'HOST': tmp.hostname,
             'PORT': tmp.port or '5432',
             'OPTIONS': {'sslmode': 'require'},
+            'CONN_MAX_AGE': 60,
         }
     }
 else:
