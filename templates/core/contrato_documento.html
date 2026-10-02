@@ -1,0 +1,21 @@
+{% extends 'core/documento_base.html' %}
+{% block title_doc %}Contrato {{ contrato.numero_contrato }}{% endblock %}
+{% block titulo_doc %}Contrato de Prestación de Servicios{% endblock %}
+{% block numero_doc %}CONTRATO N.° {{ contrato.numero_contrato }}{% endblock %}
+{% block contenido %}
+<div class="clause">
+  <p><strong>El Contratista:</strong> VORTEX LABS S.A.S. — NIT 902.104.421-7, representado legalmente por Jesús David Cossio Vergara.</p>
+  <p><strong>El Contratante:</strong> {{ contrato.cliente.nombre }} — C.C./NIT {{ contrato.cliente.cedula }}, {{ contrato.cliente.direccion }}, {{ contrato.cliente.correo }}, {{ contrato.cliente.telefono }}.</p>
+  <p><strong>Descripción:</strong> {{ contrato.descripcion }}</p>
+  <p><strong>Vigencia:</strong> {{ contrato.fecha_inicio }} al {{ contrato.fecha_fin }} — {% if contrato.activo %}Activo{% else %}Inactivo{% endif %}</p>
+</div>
+<table>
+  <thead><tr><th>Campo</th><th>Detalle</th></tr></thead>
+  <tbody>
+    <tr><td>Número de contrato</td><td>{{ contrato.numero_contrato }}</td></tr>
+    <tr><td>Cliente</td><td>{{ contrato.cliente.nombre }}</td></tr>
+    <tr><td>Inicio</td><td>{{ contrato.fecha_inicio }}</td></tr>
+    <tr><td>Fin</td><td>{{ contrato.fecha_fin }}</td></tr>
+  </tbody>
+</table>
+{% endblock %}

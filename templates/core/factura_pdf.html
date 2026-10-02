@@ -1,20 +1,22 @@
-<!DOCTYPE html>
-<html><head><meta charset="utf-8"><style>
-body { font-family: Helvetica, sans-serif; color: #0A0C13; }
-h1 { color: #00628C; }
-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-td, th { border: 1px solid #ccc; padding: 8px; text-align: left; }
-</style></head><body>
-<h1>Vortex Labs</h1>
-<h2>Factura {{ factura.numero }}</h2>
-<p><strong>Cliente:</strong> {{ factura.cliente.nombre }}<br>
-<strong>Cédula/NIT:</strong> {{ factura.cliente.cedula }}<br>
-<strong>Dirección:</strong> {{ factura.cliente.direccion }}<br>
-<strong>Emisión:</strong> {{ factura.fecha_emision }}<br>
-<strong>Vencimiento:</strong> {{ factura.fecha_vencimiento }}</p>
+{% extends 'core/documento_base.html' %}
+{% block title_doc %}Factura {{ factura.numero }}{% endblock %}
+{% block titulo_doc %}Factura de Venta{% endblock %}
+{% block numero_doc %}{{ factura.numero }}{% endblock %}
+{% block contenido %}
+<div class="clause">
+  <p><strong>Cliente:</strong> {{ factura.cliente.nombre }}<br>
+  <strong>Cédula/NIT:</strong> {{ factura.cliente.cedula }}<br>
+  <strong>Dirección:</strong> {{ factura.cliente.direccion }}<br>
+  <strong>Correo:</strong> {{ factura.cliente.correo }}<br>
+  <strong>Emisión:</strong> {{ factura.fecha_emision }}<br>
+  <strong>Vencimiento:</strong> {{ factura.fecha_vencimiento }}</p>
+</div>
 <table>
-  <tr><th>Concepto</th><th>Valor</th></tr>
-  <tr><td>{{ factura.concepto }}</td><td>${{ factura.valor }}</td></tr>
+  <thead><tr><th>Concepto</th><th>Valor</th></tr></thead>
+  <tbody>
+    <tr><td>{{ factura.concepto }}</td><td>${{ factura.valor }}</td></tr>
+    <tr class="total-row"><td><strong>TOTAL</strong></td><td><strong>${{ factura.valor }}</strong></td></tr>
+  </tbody>
 </table>
-<p><strong>Estado:</strong> {{ factura.get_estado_display }}</p>
-</body></html>
+<p>Estado: {{ factura.get_estado_display }}</p>
+{% endblock %}

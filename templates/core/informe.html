@@ -1,19 +1,28 @@
-{% extends 'base.html' %}
-{% block content %}
-<h4>Informe {{ mes }}/{{ anio }}</h4>
+{% extends 'core/documento_base.html' %}
+{% block title_doc %}Informe {{ mes }}/{{ anio }}{% endblock %}
+{% block titulo_doc %}Informe Financiero{% endblock %}
+{% block numero_doc %}PERIODO {{ mes }}/{{ anio }}{% endblock %}
+{% block contenido %}
 <form class="d-flex gap-2 mb-3">
-  <input type="number" name="mes" value="{{ mes }}" min="1" max="12" class="form-control" style="width:90px">
-  <input type="number" name="anio" value="{{ anio }}" class="form-control" style="width:120px">
-  <button class="btn btn-primary">Filtrar</button>
+  <input type="number" name="mes" value="{{ mes }}" min="1" max="12" style="width:90px;padding:8px">
+  <input type="number" name="anio" value="{{ anio }}" style="width:120px;padding:8px">
+  <button class="btn btn-primary" style="background:#FF6600;border:none;color:#fff;padding:8px 16px;border-radius:6px">Filtrar</button>
 </form>
-<div class="row">
-  <div class="col-md-4"><div class="card p-3"><h6>Facturado</h6><h3>${{ total_facturas }}</h3></div></div>
-  <div class="col-md-4"><div class="card p-3"><h6>Cuentas de cobro</h6><h3>${{ total_cuentas }}</h3></div></div>
-  <div class="col-md-4"><div class="card p-3"><h6>Gastos</h6><h3>${{ total_gastos }}</h3></div></div>
-</div>
-<h5 class="mt-4">Facturas del periodo</h5>
-<table class="table table-hover"><tbody>
-{% for f in facturas %}<tr><td>{{ f.numero }}</td><td>{{ f.cliente.nombre }}</td><td>${{ f.valor }}</td></tr>
-{% empty %}<tr><td>Sin facturas</td></tr>{% endfor %}
-</tbody></table>
+<table>
+  <thead><tr><th>Concepto</th><th>Total</th></tr></thead>
+  <tbody>
+    <tr><td>Facturado</td><td>${{ total_facturas }}</td></tr>
+    <tr><td>Cuentas de cobro</td><td>${{ total_cuentas }}</td></tr>
+    <tr><td>Gastos</td><td>${{ total_gastos }}</td></tr>
+    <tr class="total-row"><td><strong>Balance</strong></td><td><strong>${{ total_facturas|add:total_cuentas }} gastos ${{ total_gastos }}</strong></td></tr>
+  </tbody>
+</table>
+<h3 style="margin:20px 0 10px">Facturas del periodo</h3>
+<table>
+  <thead><tr><th>N°</th><th>Cliente</th><th>Valor</th></tr></thead>
+  <tbody>
+  {% for f in facturas %}<tr><td>{{ f.numero }}</td><td>{{ f.cliente.nombre }}</td><td>${{ f.valor }}</td></tr>
+  {% empty %}<tr><td colspan="3">Sin facturas</td></tr>{% endfor %}
+  </tbody>
+</table>
 {% endblock %}

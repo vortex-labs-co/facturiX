@@ -84,6 +84,12 @@ def contrato_editar(request, pk):
     return render(request, 'core/form.html', {'form': form, 'titulo': 'Editar contrato'})
 
 
+@login_required
+def contrato_documento(request, pk):
+    contrato = get_object_or_404(Contrato, pk=pk)
+    return render(request, 'core/contrato_documento.html', {'contrato': contrato})
+
+
 def _factura_pdf(factura):
     html = render_to_string('core/factura_pdf.html', {'factura': factura})
     response = HttpResponse(content_type='application/pdf')
