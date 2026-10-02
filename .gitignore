@@ -1,0 +1,25 @@
+# Dependencias
+node_modules/
+venv/
+.venv/
+__pycache__/
+
+# Build
+dist/
+build/
+out/
+*.egg-info/
+
+# Logs y env
+*.log
+.env
+.env.local
+
+# Editores / SO
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# OpenCode
+.opencode/
