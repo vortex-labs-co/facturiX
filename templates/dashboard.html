@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
 <h2>Panel principal</h2>
-<p>Bienvenido, {{ user.username }}. Aquí irá el dashboard de cuentas de cobro y rendimientos.</p>
+<p>Bienvenido, {{ user.username }}.</p>
+<div class="d-flex gap-2">
+  <a href="{% url 'cliente_lista' %}" class="btn btn-outline-info">Clientes</a>
+  <a href="{% url 'contrato_lista' %}" class="btn btn-outline-info">Contratos</a>
+</div>
 {% endblock %}

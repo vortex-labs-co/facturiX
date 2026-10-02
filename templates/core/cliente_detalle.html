@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+<h4>{{ cliente.nombre }}</h4>
+<ul class="list-group mb-3">
+  <li class="list-group-item">Cédula: {{ cliente.cedula }}</li>
+  <li class="list-group-item">Correo: {{ cliente.correo }}</li>
+  <li class="list-group-item">Teléfono: {{ cliente.telefono }}</li>
+  <li class="list-group-item">Dirección: {{ cliente.direccion }}</li>
+  <li class="list-group-item">Autorización datos: {% if cliente.autorizacion_datos %}Sí{% else %}No{% endif %}</li>
+</ul>
+<h5>Contratos</h5>
+<ul>{% for c in cliente.contratos.all %}<li>{{ c.numero_contrato }} — {{ c.descripcion }}</li>{% empty %}<li>Sin contratos</li>{% endfor %}</ul>
+<a href="{% url 'cliente_editar' cliente.pk %}" class="btn btn-outline-info">Editar</a>
+{% endblock %}

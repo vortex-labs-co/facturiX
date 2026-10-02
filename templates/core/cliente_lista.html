@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h4>Clientes</h4>
+  <a href="{% url 'cliente_crear' %}" class="btn btn-primary">Nuevo cliente</a>
+</div>
+<form class="mb-3"><input name="q" value="{{ q }}" class="form-control" placeholder="Buscar por nombre o cédula"></form>
+<table class="table table-dark table-hover">
+  <thead><tr><th>Nombre</th><th>Cédula</th><th>Correo</th><th>Teléfono</th><th>Datos autorizados</th><th></th></tr></thead>
+  <tbody>
+  {% for c in clientes %}
+    <tr>
+      <td><a href="{% url 'cliente_detalle' c.pk %}">{{ c.nombre }}</a></td>
+      <td>{{ c.cedula }}</td><td>{{ c.correo }}</td><td>{{ c.telefono }}</td>
+      <td>{% if c.autorizacion_datos %}✅{% else %}❌{% endif %}</td>
+      <td><a href="{% url 'cliente_editar' c.pk %}" class="btn btn-sm btn-outline-info">Editar</a></td>
+    </tr>
+  {% empty %}<tr><td colspan="6">Sin clientes</td></tr>{% endfor %}
+  </tbody>
+</table>
+{% endblock %}
