@@ -11,4 +11,5 @@
 <h5>Contratos</h5>
 <ul>{% for c in cliente.contratos.all %}<li>{{ c.numero_contrato }} — {{ c.descripcion }}</li>{% empty %}<li>Sin contratos</li>{% endfor %}</ul>
 <a href="{% url 'cliente_editar' cliente.pk %}" class="btn btn-outline-info">Editar</a>
+<a href="{% url 'dashboard' %}" class="btn btn-outline-secondary">Inicio</a>
 {% endblock %}

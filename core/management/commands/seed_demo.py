@@ -43,10 +43,16 @@ class Command(BaseCommand):
                     pago_validado=i % 3 == 0,
                 )
             if not cliente.cuentas.exists():
+                from xhtml2pdf import pisa
+                import io
+                buf = io.BytesIO()
+                pisa.CreatePDF(f'<h1>Cuenta de cobro {i}</h1>', dest=buf)
                 cc = CuentaCobro(cliente=cliente, contrato=contrato, descripcion=f'Cuenta de cobro {conceptos[i-1]}',
                                  valor=Decimal('1500000') + i * Decimal('250000'), fecha=hoy - timedelta(days=i * 5))
-                cc.archivo.save(f'cuenta_{i}.pdf', ContentFile(b'%PDF-1.4 demo'), save=True)
+                cc.archivo.save(f'cuenta_{i}.pdf', ContentFile(buf.getvalue()), save=True)
             if i % 2 == 0:
                 g = Gasto(descripcion=f'Gasto operativo {i}', valor=Decimal('180000') * i, fecha=hoy - timedelta(days=i * 3))
-                g.archivo.save(f'gasto_{i}.pdf', ContentFile(b'%PDF-1.4 demo'), save=True)
+                buf2 = io.BytesIO()
+                pisa.CreatePDF(f'<h1>Gasto {i}</h1>', dest=buf2)
+                g.archivo.save(f'gasto_{i}.pdf', ContentFile(buf2.getvalue()), save=True)
         self.stdout.write(self.style.SUCCESS('Datos de prueba creados: 7 clientes con contratos, facturas, cuentas y gastos'))

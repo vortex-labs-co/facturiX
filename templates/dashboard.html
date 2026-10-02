@@ -3,10 +3,10 @@
 <h2>Panel principal</h2>
 <p>Bienvenido, {{ user.username }}.</p>
 <div class="row mb-4">
-  <div class="col-md-3"><div class="card p-3"><h6>Total facturado</h6><h3>${{ total_facturado }}</h3></div></div>
-  <div class="col-md-3"><div class="card p-3"><h6>Cuentas de cobro</h6><h3>${{ total_cobrado }}</h3></div></div>
-  <div class="col-md-3"><div class="card p-3"><h6>Gastos</h6><h3>${{ total_gastos }}</h3></div></div>
-  <div class="col-md-3"><div class="card p-3"><h6>Rendimiento</h6><h3>${{ rendimiento }}</h3></div></div>
+  <div class="col-md-3"><a href="{% url 'factura_lista' %}" class="text-decoration-none"><div class="card p-3"><h6>Total facturado</h6><h3>${{ total_facturado }}</h3></div></a></div>
+  <div class="col-md-3"><a href="{% url 'cuenta_lista' %}" class="text-decoration-none"><div class="card p-3"><h6>Cuentas de cobro</h6><h3>${{ total_cobrado }}</h3></div></a></div>
+  <div class="col-md-3"><a href="{% url 'gasto_lista' %}" class="text-decoration-none"><div class="card p-3"><h6>Gastos</h6><h3>${{ total_gastos }}</h3></div></a></div>
+  <div class="col-md-3"><a href="{% url 'informe' %}" class="text-decoration-none"><div class="card p-3"><h6>Rendimiento</h6><h3>${{ rendimiento }}</h3></div></a></div>
 </div>
-<p>Facturas pendientes: <strong>{{ facturas_pendientes }}</strong></p>
+<p>Facturas pendientes: <a href="{% url 'factura_lista' %}"><strong>{{ facturas_pendientes }}</strong></a></p>
 {% endblock %}
