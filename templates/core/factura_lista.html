@@ -4,7 +4,7 @@
   <h4>Facturas</h4>
   <a href="{% url 'factura_crear' %}" class="btn btn-primary">Nueva factura</a>
 </div>
-<table class="table table-dark table-hover">
+<table class="table table-hover">
   <thead><tr><th>N°</th><th>Cliente</th><th>Valor</th><th>Emisión</th><th>Estado</th><th>Email</th><th></th></tr></thead>
   <tbody>
   {% for f in facturas %}

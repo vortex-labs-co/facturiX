@@ -4,7 +4,7 @@
   <h4>Cuentas de cobro</h4>
   <a href="{% url 'cuenta_crear' %}" class="btn btn-primary">Nueva</a>
 </div>
-<table class="table table-dark table-hover">
+<table class="table table-hover">
   <thead><tr><th>Descripción</th><th>Cliente</th><th>Valor</th><th>Fecha</th><th>Archivo</th></tr></thead>
   <tbody>
   {% for c in cuentas %}<tr><td>{{ c.descripcion }}</td><td>{{ c.cliente.nombre }}</td><td>${{ c.valor }}</td><td>{{ c.fecha }}</td><td><a href="{{ c.archivo.url }}">Ver</a></td></tr>
