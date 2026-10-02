@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+<h4>Enviar factura {{ factura.numero }}</h4>
+<p>Se enviará a <strong>{{ factura.cliente.correo }}</strong> con el PDF adjunto.</p>
+<form method="post">{% csrf_token %}
+  <button class="btn btn-primary">Confirmar envío</button>
+  <a href="{% url 'factura_lista' %}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}

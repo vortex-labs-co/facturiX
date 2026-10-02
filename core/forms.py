@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Cliente, Contrato
+from .models import Cliente, Contrato, Factura
 
 
 class ClienteForm(forms.ModelForm):
@@ -19,3 +19,10 @@ class ContratoForm(forms.ModelForm):
             'fecha_inicio': forms.DateInput(attrs={'type': 'date'}),
             'fecha_fin': forms.DateInput(attrs={'type': 'date'}),
         }
+
+
+class FacturaForm(forms.ModelForm):
+    class Meta:
+        model = Factura
+        fields = ['cliente', 'contrato', 'concepto', 'valor', 'fecha_vencimiento', 'estado', 'pago_validado']
+        widgets = {'fecha_vencimiento': forms.DateInput(attrs={'type': 'date'})}

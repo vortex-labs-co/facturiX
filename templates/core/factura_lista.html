@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h4>Facturas</h4>
+  <a href="{% url 'factura_crear' %}" class="btn btn-primary">Nueva factura</a>
+</div>
+<table class="table table-dark table-hover">
+  <thead><tr><th>N°</th><th>Cliente</th><th>Valor</th><th>Emisión</th><th>Estado</th><th>Email</th><th></th></tr></thead>
+  <tbody>
+  {% for f in facturas %}
+    <tr>
+      <td>{{ f.numero }}</td><td>{{ f.cliente.nombre }}</td><td>${{ f.valor }}</td>
+      <td>{{ f.fecha_emision }}</td><td>{{ f.get_estado_display }}</td>
+      <td>{% if f.enviada_email %}✅{% else %}—{% endif %}</td>
+      <td>
+        <a href="{% url 'factura_pdf' f.pk %}" class="btn btn-sm btn-outline-light">PDF</a>
+        <a href="{% url 'factura_enviar' f.pk %}" class="btn btn-sm btn-outline-info">Enviar</a>
+      </td>
+    </tr>
+  {% empty %}<tr><td colspan="7">Sin facturas</td></tr>{% endfor %}
+  </tbody>
+</table>
+{% endblock %}

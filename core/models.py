@@ -24,6 +24,36 @@ class Cliente(models.Model):
         return reverse('cliente_detalle', args=[self.pk])
 
 
+ESTADOS = [('pendiente', 'Pendiente'), ('enviada', 'Enviada'), ('pagada', 'Pagada')]
+
+
+class Factura(models.Model):
+    numero = models.CharField(max_length=40, unique=True, blank=True)
+    cliente = models.ForeignKey(Cliente, on_delete=models.PROTECT, related_name='facturas')
+    contrato = models.ForeignKey('Contrato', on_delete=models.SET_NULL, null=True, blank=True)
+    concepto = models.TextField()
+    valor = models.DecimalField(max_digits=14, decimal_places=2)
+    fecha_emision = models.DateField(auto_now_add=True)
+    fecha_vencimiento = models.DateField(null=True, blank=True)
+    estado = models.CharField(max_length=20, choices=ESTADOS, default='pendiente')
+    pago_validado = models.BooleanField(default=False)
+    enviada_email = models.BooleanField(default=False)
+
+    class Meta:
+        verbose_name_plural = 'Facturas'
+        ordering = ['-fecha_emision']
+
+    def save(self, *args, **kwargs):
+        if not self.numero:
+            ultimo = Factura.objects.order_by('-id').first()
+            siguiente = (ultimo.id if ultimo else 0) + 1
+            self.numero = f'FAC-{siguiente:06d}'
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.numero
+
+
 class Contrato(models.Model):
     numero_contrato = models.CharField(max_length=50, unique=True)
     cliente = models.ForeignKey(Cliente, on_delete=models.PROTECT, related_name='contratos')

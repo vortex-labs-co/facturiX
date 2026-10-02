@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><style>
+body { font-family: Helvetica, sans-serif; color: #0A0C13; }
+h1 { color: #00628C; }
+table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+td, th { border: 1px solid #ccc; padding: 8px; text-align: left; }
+</style></head><body>
+<h1>Vortex Labs</h1>
+<h2>Factura {{ factura.numero }}</h2>
+<p><strong>Cliente:</strong> {{ factura.cliente.nombre }}<br>
+<strong>Cédula/NIT:</strong> {{ factura.cliente.cedula }}<br>
+<strong>Dirección:</strong> {{ factura.cliente.direccion }}<br>
+<strong>Emisión:</strong> {{ factura.fecha_emision }}<br>
+<strong>Vencimiento:</strong> {{ factura.fecha_vencimiento }}</p>
+<table>
+  <tr><th>Concepto</th><th>Valor</th></tr>
+  <tr><td>{{ factura.concepto }}</td><td>${{ factura.valor }}</td></tr>
+</table>
+<p><strong>Estado:</strong> {{ factura.get_estado_display }}</p>
+</body></html>
