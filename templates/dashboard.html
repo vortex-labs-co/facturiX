@@ -2,9 +2,11 @@
 {% block content %}
 <h2>Panel principal</h2>
 <p>Bienvenido, {{ user.username }}.</p>
-<div class="d-flex gap-2">
-  <a href="{% url 'cliente_lista' %}" class="btn btn-outline-info">Clientes</a>
-  <a href="{% url 'contrato_lista' %}" class="btn btn-outline-info">Contratos</a>
-  <a href="{% url 'factura_lista' %}" class="btn btn-outline-info">Facturas</a>
+<div class="row mb-4">
+  <div class="col-md-3"><div class="card p-3"><h6>Total facturado</h6><h3>${{ total_facturado }}</h3></div></div>
+  <div class="col-md-3"><div class="card p-3"><h6>Cuentas de cobro</h6><h3>${{ total_cobrado }}</h3></div></div>
+  <div class="col-md-3"><div class="card p-3"><h6>Gastos</h6><h3>${{ total_gastos }}</h3></div></div>
+  <div class="col-md-3"><div class="card p-3"><h6>Rendimiento</h6><h3>${{ rendimiento }}</h3></div></div>
 </div>
+<p>Facturas pendientes: <strong>{{ facturas_pendientes }}</strong></p>
 {% endblock %}

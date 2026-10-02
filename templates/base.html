@@ -18,9 +18,18 @@
   {% if user.is_authenticated %}
   <nav class="navbar navbar-dark px-3">
     <span class="navbar-brand fw-bold" style="color:#3aa7d0">Facturix</span>
-    <form method="post" action="{% url 'logout' %}">{% csrf_token %}
-      <button class="btn btn-outline-light btn-sm">Salir</button>
-    </form>
+    <div>
+      <a class="btn btn-sm btn-outline-light me-1" href="{% url 'dashboard' %}">Inicio</a>
+      <a class="btn btn-sm btn-outline-light me-1" href="{% url 'cliente_lista' %}">Clientes</a>
+      <a class="btn btn-sm btn-outline-light me-1" href="{% url 'contrato_lista' %}">Contratos</a>
+      <a class="btn btn-sm btn-outline-light me-1" href="{% url 'factura_lista' %}">Facturas</a>
+      <a class="btn btn-sm btn-outline-light me-1" href="{% url 'cuenta_lista' %}">Cuentas</a>
+      <a class="btn btn-sm btn-outline-light me-1" href="{% url 'gasto_lista' %}">Gastos</a>
+      <a class="btn btn-sm btn-outline-light me-1" href="{% url 'informe' %}">Informe</a>
+      <form method="post" action="{% url 'logout' %}" class="d-inline">{% csrf_token %}
+        <button class="btn btn-outline-light btn-sm">Salir</button>
+      </form>
+    </div>
   </nav>
   {% endif %}
   <main class="container py-4">

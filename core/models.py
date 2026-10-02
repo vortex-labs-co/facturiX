@@ -69,3 +69,34 @@ class Contrato(models.Model):
 
     def __str__(self):
         return self.numero_contrato
+
+
+class CuentaCobro(models.Model):
+    cliente = models.ForeignKey(Cliente, on_delete=models.PROTECT, related_name='cuentas')
+    contrato = models.ForeignKey(Contrato, on_delete=models.SET_NULL, null=True, blank=True)
+    descripcion = models.CharField(max_length=300)
+    valor = models.DecimalField(max_digits=14, decimal_places=2)
+    fecha = models.DateField()
+    archivo = models.FileField(upload_to='cuentas/')
+    creado = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name_plural = 'Cuentas de cobro'
+        ordering = ['-fecha']
+
+    def __str__(self):
+        return f'{self.descripcion} - {self.cliente.nombre}'
+
+
+class Gasto(models.Model):
+    descripcion = models.CharField(max_length=300)
+    valor = models.DecimalField(max_digits=14, decimal_places=2)
+    fecha = models.DateField()
+    archivo = models.FileField(upload_to='gastos/')
+    creado = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-fecha']
+
+    def __str__(self):
+        return self.descripcion

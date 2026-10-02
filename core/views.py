@@ -1,17 +1,30 @@
 from django.contrib.auth.decorators import login_required
 from django.core.mail import EmailMessage
+from django.db.models import Sum
 from django.http import HttpResponse
+from django.utils import timezone
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import render_to_string
 from xhtml2pdf import pisa
 
-from .forms import ClienteForm, ContratoForm, FacturaForm
-from .models import Cliente, Contrato, Factura
+from .forms import ClienteForm, ContratoForm, FacturaForm, CuentaCobroForm, GastoForm
+from .models import Cliente, Contrato, Factura, CuentaCobro, Gasto
 
 
 @login_required
 def dashboard(request):
-    return render(request, 'dashboard.html')
+    hoy = timezone.now().date()
+    total_facturado = Factura.objects.aggregate(t=Sum('valor'))['t'] or 0
+    total_cobrado = CuentaCobro.objects.aggregate(t=Sum('valor'))['t'] or 0
+    total_gastos = Gasto.objects.aggregate(t=Sum('valor'))['t'] or 0
+    facturas_pendientes = Factura.objects.filter(estado='pendiente').count()
+    return render(request, 'dashboard.html', {
+        'total_facturado': total_facturado,
+        'total_cobrado': total_cobrado,
+        'total_gastos': total_gastos,
+        'rendimiento': total_facturado - total_gastos,
+        'facturas_pendientes': facturas_pendientes,
+    })
 
 
 @login_required
@@ -117,3 +130,49 @@ def factura_enviar(request, pk):
         factura.save()
         return redirect('factura_lista')
     return render(request, 'core/factura_enviar.html', {'factura': factura})
+
+
+@login_required
+def cuenta_lista(request):
+    cuentas = CuentaCobro.objects.select_related('cliente').all()
+    return render(request, 'core/cuenta_lista.html', {'cuentas': cuentas})
+
+
+@login_required
+def cuenta_crear(request):
+    form = CuentaCobroForm(request.POST or None, request.FILES or None)
+    if form.is_valid():
+        form.save()
+        return redirect('cuenta_lista')
+    return render(request, 'core/form.html', {'form': form, 'titulo': 'Nueva cuenta de cobro', 'enctype': True})
+
+
+@login_required
+def gasto_lista(request):
+    gastos = Gasto.objects.all()
+    return render(request, 'core/gasto_lista.html', {'gastos': gastos})
+
+
+@login_required
+def gasto_crear(request):
+    form = GastoForm(request.POST or None, request.FILES or None)
+    if form.is_valid():
+        form.save()
+        return redirect('gasto_lista')
+    return render(request, 'core/form.html', {'form': form, 'titulo': 'Nuevo gasto', 'enctype': True})
+
+
+@login_required
+def informe(request):
+    hoy = timezone.now().date()
+    mes = int(request.GET.get('mes', hoy.month))
+    anio = int(request.GET.get('anio', hoy.year))
+    facturas = Factura.objects.filter(fecha_emision__month=mes, fecha_emision__year=anio)
+    cuentas = CuentaCobro.objects.filter(fecha__month=mes, fecha__year=anio)
+    gastos = Gasto.objects.filter(fecha__month=mes, fecha__year=anio)
+    return render(request, 'core/informe.html', {
+        'facturas': facturas, 'cuentas': cuentas, 'gastos': gastos, 'mes': mes, 'anio': anio,
+        'total_facturas': facturas.aggregate(t=Sum('valor'))['t'] or 0,
+        'total_cuentas': cuentas.aggregate(t=Sum('valor'))['t'] or 0,
+        'total_gastos': gastos.aggregate(t=Sum('valor'))['t'] or 0,
+    })

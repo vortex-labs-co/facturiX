@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+<h4>Informe {{ mes }}/{{ anio }}</h4>
+<form class="d-flex gap-2 mb-3">
+  <input type="number" name="mes" value="{{ mes }}" min="1" max="12" class="form-control" style="width:90px">
+  <input type="number" name="anio" value="{{ anio }}" class="form-control" style="width:120px">
+  <button class="btn btn-primary">Filtrar</button>
+</form>
+<div class="row">
+  <div class="col-md-4"><div class="card p-3"><h6>Facturado</h6><h3>${{ total_facturas }}</h3></div></div>
+  <div class="col-md-4"><div class="card p-3"><h6>Cuentas de cobro</h6><h3>${{ total_cuentas }}</h3></div></div>
+  <div class="col-md-4"><div class="card p-3"><h6>Gastos</h6><h3>${{ total_gastos }}</h3></div></div>
+</div>
+<h5 class="mt-4">Facturas del periodo</h5>
+<table class="table table-dark"><tbody>
+{% for f in facturas %}<tr><td>{{ f.numero }}</td><td>{{ f.cliente.nombre }}</td><td>${{ f.valor }}</td></tr>
+{% empty %}<tr><td>Sin facturas</td></tr>{% endfor %}
+</tbody></table>
+{% endblock %}

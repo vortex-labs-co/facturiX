@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 <h4>{{ titulo }}</h4>
-<form method="post">{% csrf_token %}
+<form method="post"{% if enctype %} enctype="multipart/form-data"{% endif %}>{% csrf_token %}
   {{ form.as_p }}
   <button class="btn btn-primary">Guardar</button>
   <a href="javascript:history.back()" class="btn btn-secondary">Cancelar</a>
