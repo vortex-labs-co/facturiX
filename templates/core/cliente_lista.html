@@ -7,16 +7,17 @@
 </div>
 <form class="mb-3"><input name="q" value="{{ q }}" class="form-control" placeholder="Buscar por nombre o cédula"></form>
 <table class="table table-hover">
-  <thead><tr><th>Nombre</th><th>Cédula</th><th>Correo</th><th>Teléfono</th><th>Datos autorizados</th><th></th></tr></thead>
+  <thead><tr><th>Nombre</th><th>Tipo</th><th>Cédula</th><th>Correo</th><th>Teléfono</th><th>Datos autorizados</th><th></th></tr></thead>
   <tbody>
   {% for c in clientes %}
     <tr>
       <td><a href="{% url 'cliente_detalle' c.pk %}">{{ c.nombre }}</a></td>
-      <td>{{ c.cedula }}</td><td>{{ c.correo }}</td><td>{{ c.telefono }}</td>
+      <td>{{ c.get_tipo_persona_display }}</td>
+      <td>{{ c.cedula }}</td><td>{{ c.correo }}</td><td>{{ c.get_telefono_pais_display }} {{ c.telefono }}</td>
       <td>{% if c.autorizacion_datos %}✅{% else %}❌{% endif %}</td>
       <td><a href="{% url 'cliente_editar' c.pk %}" class="btn btn-sm btn-outline-info">Editar</a></td>
     </tr>
-  {% empty %}<tr><td colspan="6">Sin clientes</td></tr>{% endfor %}
+  {% empty %}<tr><td colspan="7">Sin clientes</td></tr>{% endfor %}
   </tbody>
 </table>
 {% endblock %}

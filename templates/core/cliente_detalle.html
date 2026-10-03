@@ -4,7 +4,11 @@
 <ul class="list-group mb-3">
   <li class="list-group-item">Cédula: {{ cliente.cedula }}</li>
   <li class="list-group-item">Correo: {{ cliente.correo }}</li>
-  <li class="list-group-item">Teléfono: {{ cliente.telefono }}</li>
+  <li class="list-group-item">Tipo de persona: {{ cliente.get_tipo_persona_display }}</li>
+  {% if cliente.tipo_persona == 'natural' %}
+  <li class="list-group-item">Fecha de nacimiento: {{ cliente.fecha_nacimiento }} — Edad: {{ cliente.edad }} años</li>
+  {% endif %}
+  <li class="list-group-item">Teléfono: {{ cliente.get_telefono_pais_display }} {{ cliente.telefono }}</li>
   <li class="list-group-item">Dirección: {{ cliente.direccion }}</li>
   <li class="list-group-item">Autorización datos: {% if cliente.autorizacion_datos %}Sí{% else %}No{% endif %}</li>
 </ul>

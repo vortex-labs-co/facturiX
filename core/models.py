@@ -1,13 +1,30 @@
+from django.core.exceptions import ValidationError
+from django.core.validators import RegexValidator
 from django.db import models
 from django.urls import reverse
+from datetime import date
+
+TELEFONO_VALIDATOR = RegexValidator(r'^\d+$', 'El teléfono solo debe contener números.')
+
+TIPOS_PERSONA = [('natural', 'Persona Natural'), ('juridica', 'Persona Jurídica')]
+
+PAISES = [
+    ('CO', 'Colombia (+57)'), ('US', 'Estados Unidos (+1)'), ('MX', 'México (+52)'),
+    ('ES', 'España (+34)'), ('AR', 'Argentina (+54)'), ('CL', 'Chile (+56)'),
+    ('PE', 'Perú (+51)'), ('BR', 'Brasil (+55)'), ('PA', 'Panamá (+507)'),
+    ('EC', 'Ecuador (+593)'), ('VE', 'Venezuela (+58)'), ('Otro', 'Otro'),
+]
 
 
 class Cliente(models.Model):
+    tipo_persona = models.CharField(max_length=20, choices=TIPOS_PERSONA, default='juridica')
     nombre = models.CharField(max_length=200)
     cedula = models.CharField(max_length=30, unique=True, verbose_name='Cédula/NIT')
     correo = models.EmailField()
-    telefono = models.CharField(max_length=30, blank=True)
+    telefono_pais = models.CharField(max_length=10, choices=PAISES, default='CO', verbose_name='País del teléfono')
+    telefono = models.CharField(max_length=30, blank=True, validators=[TELEFONO_VALIDATOR])
     direccion = models.CharField(max_length=300, blank=True)
+    fecha_nacimiento = models.DateField(null=True, blank=True, verbose_name='Fecha de nacimiento')
     autorizacion_datos = models.BooleanField(
         default=False, verbose_name='Autorización tratamiento de datos')
     fecha_autorizacion = models.DateTimeField(null=True, blank=True)
@@ -19,6 +36,22 @@ class Cliente(models.Model):
 
     def __str__(self):
         return f'{self.nombre} ({self.cedula})'
+
+    @property
+    def edad(self):
+        if not self.fecha_nacimiento:
+            return None
+        hoy = date.today()
+        return hoy.year - self.fecha_nacimiento.year - (
+            (hoy.month, hoy.day) < (self.fecha_nacimiento.month, self.fecha_nacimiento.day))
+
+    def clean(self):
+        if self.tipo_persona == 'natural':
+            if not self.fecha_nacimiento:
+                raise ValidationError({'fecha_nacimiento': 'Requerida para persona natural.'})
+            edad = self.edad
+            if edad is not None and edad < 18:
+                raise ValidationError({'fecha_nacimiento': 'El cliente debe ser mayor de 18 años.'})
 
     def get_absolute_url(self):
         return reverse('cliente_detalle', args=[self.pk])
