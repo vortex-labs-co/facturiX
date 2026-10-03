@@ -13,7 +13,7 @@
       <td>{{ c.numero_contrato }}</td><td>{{ c.cliente.nombre }}</td>
       <td>{{ c.fecha_inicio }}</td><td>{{ c.fecha_fin }}</td>
       <td>{% if c.activo %}✅{% else %}❌{% endif %}</td>
-      <td><a href="{% url 'contrato_editar' c.pk %}" class="btn btn-sm btn-outline-info">Editar</a> <a href="{% url 'contrato_documento' c.pk %}" class="btn btn-sm btn-outline-success">Documento</a></td>
+      <td><a href="{% url 'contrato_editar' c.pk %}" title="Editar">✏️</a> <a href="{% url 'contrato_documento' c.pk %}" title="Ver documento">👁</a> <a href="{% url 'borrar' 'contrato' c.pk %}" title="Eliminar">🗑️</a></td>
     </tr>
   {% empty %}<tr><td colspan="6">Sin contratos</td></tr>{% endfor %}
   </tbody>

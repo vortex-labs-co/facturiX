@@ -54,6 +54,7 @@
   {% else %}
   <div class="main" style="margin-left:0">
   {% endif %}
+    {% if messages %}{% for m in messages %}<div class="alert alert-{% if m.tags == 'error' %}danger{% else %}success{% endif %}">{{ m }}</div>{% endfor %}{% endif %}
     {% block content %}{% endblock %}
   </div>
 </body>

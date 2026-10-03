@@ -3,6 +3,7 @@ from django.core.mail import EmailMessage
 from django.db.models import Sum
 from django.http import HttpResponse
 from django.utils import timezone
+from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import render_to_string
 from xhtml2pdf import pisa
@@ -119,6 +120,23 @@ def contrato_pdf(request, pk):
     response['Content-Disposition'] = f'attachment; filename="{contrato.numero_contrato}.pdf"'
     pisa.CreatePDF(html, dest=response)
     return response
+
+
+@login_required
+def borrar(request, modelo, pk):
+    modelos = {'cliente': Cliente, 'contrato': Contrato, 'factura': Factura, 'cuenta': CuentaCobro, 'gasto': Gasto}
+    M = modelos.get(modelo)
+    obj = get_object_or_404(M, pk=pk)
+    nombre_campo = {'cliente': 'cliente_lista', 'contrato': 'contrato_lista', 'factura': 'factura_lista', 'cuenta': 'cuenta_lista', 'gasto': 'gasto_lista'}
+    if request.method == 'POST':
+        from django.db.models import ProtectedError
+        try:
+            obj.delete()
+            messages.success(request, 'Registro eliminado.')
+        except ProtectedError:
+            messages.error(request, 'No se puede eliminar: tiene registros relacionados.')
+        return redirect(nombre_campo[modelo])
+    return render(request, 'core/confirmar_borrar.html', {'obj': obj, 'modelo': modelo})
 
 
 def _factura_pdf(factura):

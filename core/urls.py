@@ -30,4 +30,5 @@ urlpatterns = [
     path('gastos/<int:pk>/vista/', views.gasto_vista, name='gasto_vista'),
     path('informe/', views.informe, name='informe'),
     path('informe/csv/', views.informe_csv, name='informe_csv'),
+    path('borrar/<str:modelo>/<int:pk>/', views.borrar, name='borrar'),
 ]

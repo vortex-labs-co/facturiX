@@ -14,9 +14,10 @@
       <td>{{ f.fecha_emision }}</td><td>{{ f.get_estado_display }}</td>
       <td>{% if f.enviada_email %}✅{% else %}—{% endif %}</td>
       <td>
-        <a href="{% url 'factura_vista' f.pk %}" class="btn btn-sm btn-outline-success">Vista</a>
-        <a href="{% url 'factura_pdf' f.pk %}" class="btn btn-sm btn-outline-light">PDF</a>
-        <a href="{% url 'factura_enviar' f.pk %}" class="btn btn-sm btn-outline-info">Enviar</a>
+        <a href="{% url 'factura_vista' f.pk %}" title="Vista previa">👁</a>
+        <a href="{% url 'factura_pdf' f.pk %}" title="Descargar PDF">📄</a>
+        <a href="{% url 'factura_enviar' f.pk %}" title="Enviar por email">📧</a>
+        <a href="{% url 'borrar' 'factura' f.pk %}" title="Eliminar">🗑️</a>
       </td>
     </tr>
   {% empty %}<tr><td colspan="7">Sin facturas</td></tr>{% endfor %}

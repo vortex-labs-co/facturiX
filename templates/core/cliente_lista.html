@@ -15,7 +15,7 @@
       <td>{{ c.get_tipo_persona_display }}</td>
       <td>{{ c.cedula }}</td><td>{{ c.correo }}</td><td>{{ c.get_telefono_pais_display }} {{ c.telefono }}</td>
       <td>{% if c.autorizacion_datos %}✅{% else %}❌{% endif %}</td>
-      <td><a href="{% url 'cliente_editar' c.pk %}" class="btn btn-sm btn-outline-info">Editar</a></td>
+      <td><a href="{% url 'cliente_editar' c.pk %}" title="Editar">✏️</a> <a href="{% url 'borrar' 'cliente' c.pk %}" title="Eliminar">🗑️</a></td>
     </tr>
   {% empty %}<tr><td colspan="7">Sin clientes</td></tr>{% endfor %}
   </tbody>
