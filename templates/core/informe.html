@@ -4,9 +4,12 @@
 {% block numero_doc %}PERIODO {{ mes }}/{{ anio }}{% endblock %}
 {% block contenido %}
 <form class="d-flex gap-2 mb-3">
-  <input type="number" name="mes" value="{{ mes }}" min="1" max="12" style="width:90px;padding:8px">
-  <input type="number" name="anio" value="{{ anio }}" style="width:120px;padding:8px">
+  <input type="date" name="dia" value="{{ dia }}" style="padding:8px">
+  <input type="number" name="mes" value="{{ mes }}" min="1" max="12" placeholder="Mes" style="width:90px;padding:8px">
+  <input type="number" name="anio" value="{{ anio }}" placeholder="Año" style="width:120px;padding:8px">
   <button class="btn btn-primary" style="background:#FF6600;border:none;color:#fff;padding:8px 16px;border-radius:6px">Filtrar</button>
+  <a href="{% url 'informe_csv' %}?mes={{ mes }}&anio={{ anio }}&dia={{ dia }}" class="btn btn-success" style="padding:8px 16px;">⬇ Descargar CSV</a>
+  <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary" style="padding:8px 16px;">Inicio</a>
 </form>
 <table>
   <thead><tr><th>Concepto</th><th>Total</th></tr></thead>

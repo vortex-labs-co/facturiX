@@ -207,15 +207,53 @@ def gasto_crear(request):
 @login_required
 def informe(request):
     hoy = timezone.now().date()
-    mes = int(request.GET.get('mes', hoy.month))
-    anio = int(request.GET.get('anio', hoy.year))
-    facturas = Factura.objects.filter(fecha_emision__month=mes, fecha_emision__year=anio)
-    cuentas = CuentaCobro.objects.filter(fecha__month=mes, fecha__year=anio)
-    gastos = Gasto.objects.filter(fecha__month=mes, fecha__year=anio)
+    mes = request.GET.get('mes', '')
+    anio = request.GET.get('anio', '')
+    dia = request.GET.get('dia', '')
+    facturas = Factura.objects.all()
+    cuentas = CuentaCobro.objects.all()
+    gastos = Gasto.objects.all()
+    if dia:
+        facturas = facturas.filter(fecha_emision=dia)
+        cuentas = cuentas.filter(fecha=dia)
+        gastos = gastos.filter(fecha=dia)
+    else:
+        if mes:
+            facturas = facturas.filter(fecha_emision__month=mes)
+            cuentas = cuentas.filter(fecha__month=mes)
+            gastos = gastos.filter(fecha__month=mes)
+        if anio:
+            facturas = facturas.filter(fecha_emision__year=anio)
+            cuentas = cuentas.filter(fecha__year=anio)
+            gastos = gastos.filter(fecha__year=anio)
     return render(request, 'core/informe.html', {
-        'facturas': facturas, 'cuentas': cuentas, 'gastos': gastos, 'mes': mes, 'anio': anio,
+        'facturas': facturas, 'cuentas': cuentas, 'gastos': gastos, 'mes': mes, 'anio': anio, 'dia': dia,
         'total_facturas': facturas.aggregate(t=Sum('valor'))['t'] or 0,
         'total_cuentas': cuentas.aggregate(t=Sum('valor'))['t'] or 0,
         'total_gastos': gastos.aggregate(t=Sum('valor'))['t'] or 0,
         'balance': (facturas.aggregate(t=Sum('valor'))['t'] or 0) - (gastos.aggregate(t=Sum('valor'))['t'] or 0),
     })
+
+
+@login_required
+def informe_csv(request):
+    import csv
+    hoy = timezone.now().date()
+    mes = request.GET.get('mes', '')
+    anio = request.GET.get('anio', '')
+    dia = request.GET.get('dia', '')
+    facturas = Factura.objects.all()
+    if dia:
+        facturas = facturas.filter(fecha_emision=dia)
+    else:
+        if mes:
+            facturas = facturas.filter(fecha_emision__month=mes)
+        if anio:
+            facturas = facturas.filter(fecha_emision__year=anio)
+    response = HttpResponse(content_type='text/csv; charset=utf-8-sig')
+    response['Content-Disposition'] = 'attachment; filename="informe_facturas.csv"'
+    writer = csv.writer(response)
+    writer.writerow(['Numero', 'Cliente', 'Fecha emision', 'Vencimiento', 'Valor', 'Estado'])
+    for f in facturas:
+        writer.writerow([f.numero, f.cliente.nombre, f.fecha_emision, f.fecha_vencimiento, f.valor, f.get_estado_display()])
+    return response

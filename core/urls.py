@@ -28,4 +28,5 @@ urlpatterns = [
     path('gastos/nuevo/', views.gasto_crear, name='gasto_crear'),
     path('gastos/<int:pk>/vista/', views.gasto_vista, name='gasto_vista'),
     path('informe/', views.informe, name='informe'),
+    path('informe/csv/', views.informe_csv, name='informe_csv'),
 ]
