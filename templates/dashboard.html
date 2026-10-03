@@ -9,4 +9,42 @@
   <div class="col-md-3"><a href="{% url 'informe' %}" class="text-decoration-none"><div class="card p-3"><h6>Rendimiento</h6><h3>${{ rendimiento }}</h3></div></a></div>
 </div>
 <p>Facturas pendientes: <a href="{% url 'factura_lista' %}"><strong>{{ facturas_pendientes }}</strong></a></p>
+
+<div class="row">
+  <div class="col-md-8">
+    <div class="card p-3">
+      <h6 class="mb-3">Facturado vs Gastos vs Cuentas de cobro (últimos 6 meses)</h6>
+      <canvas id="chartBarras" height="120"></canvas>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card p-3">
+      <h6 class="mb-3">Distribución</h6>
+      <canvas id="chartDona" height="120"></canvas>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+new Chart(document.getElementById('chartBarras'), {
+  type: 'bar',
+  data: {
+    labels: {{ meses|safe }},
+    datasets: [
+      { label: 'Facturado', data: {{ series_fact|safe }}, backgroundColor: '#00628C' },
+      { label: 'Cuentas de cobro', data: {{ series_cuentas|safe }}, backgroundColor: '#B02F00' },
+      { label: 'Gastos', data: {{ series_gas|safe }}, backgroundColor: '#565E74' },
+    ]
+  }
+});
+new Chart(document.getElementById('chartDona'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Facturado', 'Cuentas', 'Gastos'],
+    datasets: [{ data: [{{ total_facturado }}, {{ total_cobrado }}, {{ total_gastos }}],
+      backgroundColor: ['#00628C', '#B02F00', '#565E74'] }]
+  }
+});
+</script>
 {% endblock %}

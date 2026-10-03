@@ -1,14 +1,13 @@
 {% extends 'core/documento_base.html' %}
-{% block title_doc %}Informe {{ mes }}/{{ anio }}{% endblock %}
+{% block title_doc %}Informe financiero{% endblock %}
 {% block titulo_doc %}Informe Financiero{% endblock %}
-{% block numero_doc %}PERIODO {{ mes }}/{{ anio }}{% endblock %}
+{% block numero_doc %}{% if desde %}DESDE {{ desde }}{% endif %} {% if hasta %}HASTA {{ hasta }}{% endif %}{% endblock %}
 {% block contenido %}
 <form class="d-flex gap-2 mb-3">
-  <input type="date" name="dia" value="{{ dia }}" style="padding:8px">
-  <input type="number" name="mes" value="{{ mes }}" min="1" max="12" placeholder="Mes" style="width:90px;padding:8px">
-  <input type="number" name="anio" value="{{ anio }}" placeholder="Año" style="width:120px;padding:8px">
+  <label>Desde: <input type="date" name="desde" value="{{ desde }}" style="padding:8px"></label>
+  <label>Hasta: <input type="date" name="hasta" value="{{ hasta }}" style="padding:8px"></label>
   <button class="btn btn-primary" style="background:#FF6600;border:none;color:#fff;padding:8px 16px;border-radius:6px">Filtrar</button>
-  <a href="{% url 'informe_csv' %}?mes={{ mes }}&anio={{ anio }}&dia={{ dia }}" class="btn btn-success" style="padding:8px 16px;">⬇ Descargar CSV</a>
+  <a href="{% url 'informe_csv' %}?desde={{ desde }}&hasta={{ hasta }}" class="btn btn-success" style="padding:8px 16px;">⬇ Descargar CSV</a>
   <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary" style="padding:8px 16px;">Inicio</a>
 </form>
 <table>

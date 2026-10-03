@@ -18,12 +18,25 @@ def dashboard(request):
     total_cobrado = CuentaCobro.objects.aggregate(t=Sum('valor'))['t'] or 0
     total_gastos = Gasto.objects.aggregate(t=Sum('valor'))['t'] or 0
     facturas_pendientes = Factura.objects.filter(estado='pendiente').count()
+    # Series mensuales para graficas (ultimos 6 meses)
+    from dateutil.relativedelta import relativedelta
+    meses = []
+    series_fact = []
+    series_gas = []
+    series_cuentas = []
+    for i in range(5, -1, -1):
+        ref = hoy - relativedelta(months=i)
+        meses.append(ref.strftime('%m/%Y'))
+        series_fact.append(float(Factura.objects.filter(fecha_emision__month=ref.month, fecha_emision__year=ref.year).aggregate(t=Sum('valor'))['t'] or 0))
+        series_gas.append(float(Gasto.objects.filter(fecha__month=ref.month, fecha__year=ref.year).aggregate(t=Sum('valor'))['t'] or 0))
+        series_cuentas.append(float(CuentaCobro.objects.filter(fecha__month=ref.month, fecha__year=ref.year).aggregate(t=Sum('valor'))['t'] or 0))
     return render(request, 'dashboard.html', {
         'total_facturado': total_facturado,
         'total_cobrado': total_cobrado,
         'total_gastos': total_gastos,
         'rendimiento': total_facturado - total_gastos,
         'facturas_pendientes': facturas_pendientes,
+        'meses': meses, 'series_fact': series_fact, 'series_gas': series_gas, 'series_cuentas': series_cuentas,
     })
 
 
@@ -207,27 +220,21 @@ def gasto_crear(request):
 @login_required
 def informe(request):
     hoy = timezone.now().date()
-    mes = request.GET.get('mes', '')
-    anio = request.GET.get('anio', '')
-    dia = request.GET.get('dia', '')
+    desde = request.GET.get('desde', '')
+    hasta = request.GET.get('hasta', '')
     facturas = Factura.objects.all()
     cuentas = CuentaCobro.objects.all()
     gastos = Gasto.objects.all()
-    if dia:
-        facturas = facturas.filter(fecha_emision=dia)
-        cuentas = cuentas.filter(fecha=dia)
-        gastos = gastos.filter(fecha=dia)
-    else:
-        if mes:
-            facturas = facturas.filter(fecha_emision__month=mes)
-            cuentas = cuentas.filter(fecha__month=mes)
-            gastos = gastos.filter(fecha__month=mes)
-        if anio:
-            facturas = facturas.filter(fecha_emision__year=anio)
-            cuentas = cuentas.filter(fecha__year=anio)
-            gastos = gastos.filter(fecha__year=anio)
+    if desde:
+        facturas = facturas.filter(fecha_emision__gte=desde)
+        cuentas = cuentas.filter(fecha__gte=desde)
+        gastos = gastos.filter(fecha__gte=desde)
+    if hasta:
+        facturas = facturas.filter(fecha_emision__lte=hasta)
+        cuentas = cuentas.filter(fecha__lte=hasta)
+        gastos = gastos.filter(fecha__lte=hasta)
     return render(request, 'core/informe.html', {
-        'facturas': facturas, 'cuentas': cuentas, 'gastos': gastos, 'mes': mes, 'anio': anio, 'dia': dia,
+        'facturas': facturas, 'cuentas': cuentas, 'gastos': gastos, 'desde': desde, 'hasta': hasta,
         'total_facturas': facturas.aggregate(t=Sum('valor'))['t'] or 0,
         'total_cuentas': cuentas.aggregate(t=Sum('valor'))['t'] or 0,
         'total_gastos': gastos.aggregate(t=Sum('valor'))['t'] or 0,
@@ -239,17 +246,13 @@ def informe(request):
 def informe_csv(request):
     import csv
     hoy = timezone.now().date()
-    mes = request.GET.get('mes', '')
-    anio = request.GET.get('anio', '')
-    dia = request.GET.get('dia', '')
+    desde = request.GET.get('desde', '')
+    hasta = request.GET.get('hasta', '')
     facturas = Factura.objects.all()
-    if dia:
-        facturas = facturas.filter(fecha_emision=dia)
-    else:
-        if mes:
-            facturas = facturas.filter(fecha_emision__month=mes)
-        if anio:
-            facturas = facturas.filter(fecha_emision__year=anio)
+    if desde:
+        facturas = facturas.filter(fecha_emision__gte=desde)
+    if hasta:
+        facturas = facturas.filter(fecha_emision__lte=hasta)
     response = HttpResponse(content_type='text/csv; charset=utf-8-sig')
     response['Content-Disposition'] = 'attachment; filename="informe_facturas.csv"'
     writer = csv.writer(response)
