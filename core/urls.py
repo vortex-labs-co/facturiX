@@ -15,6 +15,7 @@ urlpatterns = [
     path('contratos/nuevo/', views.contrato_crear, name='contrato_crear'),
     path('contratos/<int:pk>/editar/', views.contrato_editar, name='contrato_editar'),
     path('contratos/<int:pk>/documento/', views.contrato_documento, name='contrato_documento'),
+    path('contratos/<int:pk>/pdf/', views.contrato_pdf, name='contrato_pdf'),
     path('facturas/', views.factura_lista, name='factura_lista'),
     path('facturas/nueva/', views.factura_crear, name='factura_crear'),
     path('facturas/<int:pk>/pdf/', views.factura_pdf, name='factura_pdf'),

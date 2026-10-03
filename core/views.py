@@ -90,6 +90,18 @@ def contrato_documento(request, pk):
     return render(request, 'core/contrato_documento.html', {'contrato': contrato})
 
 
+@login_required
+def contrato_pdf(request, pk):
+    contrato = get_object_or_404(Contrato, pk=pk)
+    html = render_to_string('core/contrato_documento_pdf.html', {'contrato': contrato})
+    from django.http import HttpResponse as _HR
+    from xhtml2pdf import pisa
+    response = _HR(content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="{contrato.numero_contrato}.pdf"'
+    pisa.CreatePDF(html, dest=response)
+    return response
+
+
 def _factura_pdf(factura):
     html = render_to_string('core/factura_pdf.html', {'factura': factura})
     response = HttpResponse(content_type='application/pdf')
