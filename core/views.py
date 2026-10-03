@@ -191,6 +191,16 @@ def cuenta_crear(request):
 
 
 @login_required
+def cuenta_editar(request, pk):
+    cuenta = get_object_or_404(CuentaCobro, pk=pk)
+    form = CuentaCobroForm(request.POST or None, request.FILES or None, instance=cuenta)
+    if form.is_valid():
+        form.save()
+        return redirect('cuenta_lista')
+    return render(request, 'core/form.html', {'form': form, 'titulo': 'Editar cuenta de cobro', 'enctype': True})
+
+
+@login_required
 def cuenta_vista(request, pk):
     cuenta = get_object_or_404(CuentaCobro, pk=pk)
     url = cuenta.archivo.url if cuenta.archivo else ''

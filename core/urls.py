@@ -24,6 +24,7 @@ urlpatterns = [
     path('cuentas/', views.cuenta_lista, name='cuenta_lista'),
     path('cuentas/nueva/', views.cuenta_crear, name='cuenta_crear'),
     path('cuentas/<int:pk>/vista/', views.cuenta_vista, name='cuenta_vista'),
+    path('cuentas/<int:pk>/editar/', views.cuenta_editar, name='cuenta_editar'),
     path('gastos/', views.gasto_lista, name='gasto_lista'),
     path('gastos/nuevo/', views.gasto_crear, name='gasto_crear'),
     path('gastos/<int:pk>/vista/', views.gasto_vista, name='gasto_vista'),
