@@ -6,9 +6,9 @@
   <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary ms-2">Inicio</a>
 </div>
 <table class="table table-hover">
-  <thead><tr><th>Descripción</th><th>Valor</th><th>Fecha</th><th>Archivo</th></tr></thead>
+  <thead><tr><th>Descripción</th><th>Concepto</th><th>Valor</th><th>Fecha</th><th>Archivo</th></tr></thead>
   <tbody>
-  {% for g in gastos %}<tr><td>{{ g.descripcion }}</td><td>${{ g.valor }}</td><td>{{ g.fecha }}</td><td><a href="{% url 'gasto_vista' g.pk %}" class="btn btn-sm btn-outline-success">Vista</a> <a href="{{ g.archivo.url }}" class="btn btn-sm btn-outline-light">Ver</a></td></tr>
+  {% for g in gastos %}<tr><td>{{ g.descripcion }}</td><td>{{ g.concepto }}</td><td>${{ g.valor }}</td><td>{{ g.fecha }}</td><td><a href="{% url 'gasto_vista' g.pk %}" class="btn btn-sm btn-outline-success">Vista</a> <a href="{{ g.archivo.url }}" class="btn btn-sm btn-outline-light">Ver</a></td></tr>
   {% empty %}<tr><td colspan="4">Sin gastos</td></tr>{% endfor %}
   </tbody>
 </table>

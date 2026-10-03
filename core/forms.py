@@ -55,5 +55,5 @@ class CuentaCobroForm(forms.ModelForm):
 class GastoForm(forms.ModelForm):
     class Meta:
         model = Gasto
-        fields = ['descripcion', 'valor', 'fecha', 'archivo']
+        fields = ['descripcion', 'concepto', 'valor', 'fecha', 'archivo']
         widgets = {'fecha': forms.DateInput(attrs={'type': 'date'})}

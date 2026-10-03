@@ -123,6 +123,7 @@ class CuentaCobro(models.Model):
 
 class Gasto(models.Model):
     descripcion = models.CharField(max_length=300)
+    concepto = models.CharField(max_length=200, blank=True, verbose_name='Concepto')
     valor = models.DecimalField(max_digits=14, decimal_places=2)
     fecha = models.DateField()
     archivo = models.FileField(upload_to='gastos/')
