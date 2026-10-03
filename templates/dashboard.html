@@ -1,19 +1,19 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} {% load core_tags %}
 {% block content %}
 <h2>Panel principal</h2>
 <p>Bienvenido, {{ user.username }}.</p>
 <div class="row mb-4">
-  <div class="col-md-3"><a href="{% url 'factura_lista' %}" class="text-decoration-none"><div class="card p-3"><h6>Total facturado</h6><h3>${{ total_facturado }}</h3></div></a></div>
-  <div class="col-md-3"><a href="{% url 'cuenta_lista' %}" class="text-decoration-none"><div class="card p-3"><h6>Cuentas de cobro</h6><h3>${{ total_cobrado }}</h3></div></a></div>
-  <div class="col-md-3"><a href="{% url 'gasto_lista' %}" class="text-decoration-none"><div class="card p-3"><h6>Gastos</h6><h3>${{ total_gastos }}</h3></div></a></div>
-  <div class="col-md-3"><a href="{% url 'informe' %}" class="text-decoration-none"><div class="card p-3"><h6>Rendimiento</h6><h3>${{ rendimiento }}</h3></div></a></div>
+  <div class="col-md-3"><a href="{% url 'factura_lista' %}" class="text-decoration-none"><div class="card p-3"><h6>Total facturado</h6><h3>{{ total_facturado|moneda }}</h3></div></a></div>
+  <div class="col-md-3"><a href="{% url 'cuenta_lista' %}" class="text-decoration-none"><div class="card p-3"><h6>Cuentas de cobro</h6><h3>{{ total_cobrado|moneda }}</h3></div></a></div>
+  <div class="col-md-3"><a href="{% url 'gasto_lista' %}" class="text-decoration-none"><div class="card p-3"><h6>Gastos</h6><h3>{{ total_gastos|moneda }}</h3></div></a></div>
+  <div class="col-md-3"><a href="{% url 'informe' %}" class="text-decoration-none"><div class="card p-3"><h6>Rendimiento</h6><h3>{{ rendimiento|moneda }}</h3></div></a></div>
 </div>
 <p>Facturas pendientes: <a href="{% url 'factura_lista' %}"><strong>{{ facturas_pendientes }}</strong></a></p>
 
 <div class="card p-3 mb-4">
   <h6 class="mb-0">💰 Capital en caja (ingresos − egresos)</h6>
-  <h2 class="mb-0" style="color:#00628C">${{ capital_caja }}</h2>
-  <small>Total ingresos: ${{ total_ingresos }} — Total egresos: ${{ total_gastos }}</small>
+  <h2 class="mb-0" style="color:#00628C">{{ capital_caja|moneda }}</h2>
+  <small>Total ingresos: {{ total_ingresos|moneda }} — Total egresos: {{ total_gastos|moneda }}</small>
 </div>
 
 <div class="row">
@@ -69,3 +69,5 @@ new Chart(document.getElementById('chartDona'), {
 });
 </script>
 {% endblock %}
+
+

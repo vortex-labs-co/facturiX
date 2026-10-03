@@ -1,7 +1,7 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} {% load core_tags %}
 {% block content %}
 <h4>Previsualizar: {{ cuenta.descripcion }}</h4>
-<p>Cliente: {{ cuenta.cliente.nombre }} — Valor: ${{ cuenta.valor }} — Fecha: {{ cuenta.fecha }}</p>
+<p>Cliente: {{ cuenta.cliente.nombre }} — Valor: {{ cuenta.valor|moneda }} — Fecha: {{ cuenta.fecha }}</p>
 {% if es_pdf %}
   <embed src="{{ cuenta.archivo.url }}" type="application/pdf" width="100%" height="600px">
 {% elif es_imagen %}
@@ -13,3 +13,5 @@
 <a href="{% url 'cuenta_lista' %}" class="btn btn-secondary mt-3">Volver</a>
 <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary mt-3">Inicio</a>
 {% endblock %}
+
+

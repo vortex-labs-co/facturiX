@@ -1,4 +1,4 @@
-{% extends 'core/documento_base.html' %}
+{% extends 'core/documento_base.html' %} {% load core_tags %}
 {% block title_doc %}Factura {{ factura.numero }}{% endblock %}
 {% block titulo_doc %}Factura de Venta{% endblock %}
 {% block numero_doc %}{{ factura.numero }}{% endblock %}
@@ -14,9 +14,11 @@
 <table>
   <thead><tr><th>Concepto</th><th>Valor</th></tr></thead>
   <tbody>
-    <tr><td>{{ factura.concepto }}</td><td>${{ factura.valor }}</td></tr>
-    <tr class="total-row"><td><strong>TOTAL</strong></td><td><strong>${{ factura.valor }}</strong></td></tr>
+    <tr><td>{{ factura.concepto }}</td><td>{{ factura.valor|moneda }}</td></tr>
+    <tr class="total-row"><td><strong>TOTAL</strong></td><td><strong>{{ factura.valor|moneda }}</strong></td></tr>
   </tbody>
 </table>
 <p>Estado: {{ factura.get_estado_display }}</p>
 {% endblock %}
+
+
