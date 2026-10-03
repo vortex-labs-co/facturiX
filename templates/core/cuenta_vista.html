@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+<h4>Previsualizar: {{ cuenta.descripcion }}</h4>
+<p>Cliente: {{ cuenta.cliente.nombre }} — Valor: ${{ cuenta.valor }} — Fecha: {{ cuenta.fecha }}</p>
+{% if es_pdf %}
+  <embed src="{{ cuenta.archivo.url }}" type="application/pdf" width="100%" height="600px">
+{% elif es_imagen %}
+  <img src="{{ cuenta.archivo.url }}" class="img-fluid" alt="cuenta">
+{% else %}
+  <div class="alert alert-info">Vista previa no disponible para este tipo de archivo.</div>
+{% endif %}
+<a href="{{ cuenta.archivo.url }}" download class="btn btn-primary mt-3">⬇ Descargar</a>
+<a href="{% url 'cuenta_lista' %}" class="btn btn-secondary mt-3">Volver</a>
+<a href="{% url 'dashboard' %}" class="btn btn-outline-secondary mt-3">Inicio</a>
+{% endblock %}

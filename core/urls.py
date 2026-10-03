@@ -23,6 +23,7 @@ urlpatterns = [
     path('facturas/<int:pk>/enviar/', views.factura_enviar, name='factura_enviar'),
     path('cuentas/', views.cuenta_lista, name='cuenta_lista'),
     path('cuentas/nueva/', views.cuenta_crear, name='cuenta_crear'),
+    path('cuentas/<int:pk>/vista/', views.cuenta_vista, name='cuenta_vista'),
     path('gastos/', views.gasto_lista, name='gasto_lista'),
     path('gastos/nuevo/', views.gasto_crear, name='gasto_crear'),
     path('informe/', views.informe, name='informe'),
