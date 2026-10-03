@@ -69,6 +69,7 @@ class Factura(models.Model):
     fecha_emision = models.DateField(auto_now_add=True)
     fecha_vencimiento = models.DateField(null=True, blank=True)
     estado = models.CharField(max_length=20, choices=ESTADOS, default='pendiente')
+    moneda = models.CharField(max_length=3, default='COP', choices=[('COP', 'COP'), ('USD', 'USD'), ('EUR', 'EUR')])
     pago_validado = models.BooleanField(default=False)
     enviada_email = models.BooleanField(default=False)
 
@@ -111,6 +112,7 @@ class CuentaCobro(models.Model):
     valor = models.DecimalField(max_digits=14, decimal_places=2)
     fecha = models.DateField()
     archivo = models.FileField(upload_to='cuentas/')
+    moneda = models.CharField(max_length=3, default='COP', choices=[('COP', 'COP'), ('USD', 'USD'), ('EUR', 'EUR')])
     creado = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -127,6 +129,7 @@ class Gasto(models.Model):
     valor = models.DecimalField(max_digits=14, decimal_places=2)
     fecha = models.DateField()
     archivo = models.FileField(upload_to='gastos/')
+    moneda = models.CharField(max_length=3, default='COP', choices=[('COP', 'COP'), ('USD', 'USD'), ('EUR', 'EUR')])
     creado = models.DateTimeField(auto_now_add=True)
 
     class Meta:

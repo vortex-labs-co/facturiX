@@ -10,7 +10,7 @@
   <tbody>
   {% for f in facturas %}
     <tr>
-      <td>{{ f.numero }}</td><td>{{ f.cliente.nombre }}</td><td>{{ f.valor|moneda }}</td>
+      <td>{{ f.numero }}</td><td>{{ f.cliente.nombre }}</td><td>{{ f.valor|moneda:f.moneda }}</td>
       <td>{{ f.fecha_emision }}</td><td>{{ f.get_estado_display }}</td>
       <td>{% if f.enviada_email %}✅{% else %}—{% endif %}</td>
       <td>
@@ -23,5 +23,6 @@
   </tbody>
 </table>
 {% endblock %}
+
 
 

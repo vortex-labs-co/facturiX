@@ -23,10 +23,11 @@
 <table>
   <thead><tr><th>N°</th><th>Cliente</th><th>Valor</th></tr></thead>
   <tbody>
-  {% for f in facturas %}<tr><td>{{ f.numero }}</td><td>{{ f.cliente.nombre }}</td><td>{{ f.valor|moneda }}</td></tr>
+  {% for f in facturas %}<tr><td>{{ f.numero }}</td><td>{{ f.cliente.nombre }}</td><td>{{ f.valor|moneda:f.moneda }}</td></tr>
   {% empty %}<tr><td colspan="3">Sin facturas</td></tr>{% endfor %}
   </tbody>
 </table>
 {% endblock %}
+
 
 

@@ -17,6 +17,9 @@ def dashboard(request):
     total_facturado = Factura.objects.aggregate(t=Sum('valor'))['t'] or 0
     total_cobrado = CuentaCobro.objects.aggregate(t=Sum('valor'))['t'] or 0
     total_gastos = Gasto.objects.aggregate(t=Sum('valor'))['t'] or 0
+    fact_por_moneda = {}
+    for m in ['COP', 'USD', 'EUR']:
+        fact_por_moneda[m] = Factura.objects.filter(moneda=m).aggregate(t=Sum('valor'))['t'] or 0
     facturas_pendientes = Factura.objects.filter(estado='pendiente').count()
     # Series mensuales para graficas (ultimos 6 meses)
     from dateutil.relativedelta import relativedelta
@@ -39,6 +42,7 @@ def dashboard(request):
         'meses': meses, 'series_fact': series_fact, 'series_gas': series_gas, 'series_cuentas': series_cuentas,
         'capital_caja': total_facturado - total_gastos,
         'total_ingresos': total_facturado + total_cobrado,
+        'fact_por_moneda': fact_por_moneda,
     })
 
 

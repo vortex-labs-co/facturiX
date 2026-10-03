@@ -41,19 +41,19 @@ class ContratoForm(forms.ModelForm):
 class FacturaForm(forms.ModelForm):
     class Meta:
         model = Factura
-        fields = ['cliente', 'contrato', 'concepto', 'valor', 'fecha_vencimiento', 'estado', 'pago_validado']
+        fields = ['cliente', 'contrato', 'concepto', 'valor', 'fecha_vencimiento', 'estado', 'moneda', 'pago_validado']
         widgets = {'fecha_vencimiento': forms.DateInput(attrs={'type': 'date'})}
 
 
 class CuentaCobroForm(forms.ModelForm):
     class Meta:
         model = CuentaCobro
-        fields = ['cliente', 'contrato', 'descripcion', 'valor', 'fecha', 'archivo']
+        fields = ['cliente', 'contrato', 'descripcion', 'valor', 'fecha', 'moneda', 'archivo']
         widgets = {'fecha': forms.DateInput(attrs={'type': 'date'})}
 
 
 class GastoForm(forms.ModelForm):
     class Meta:
         model = Gasto
-        fields = ['descripcion', 'concepto', 'valor', 'fecha', 'archivo']
+        fields = ['descripcion', 'concepto', 'valor', 'fecha', 'moneda', 'archivo']
         widgets = {'fecha': forms.DateInput(attrs={'type': 'date'})}

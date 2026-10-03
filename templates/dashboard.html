@@ -14,6 +14,9 @@
   <h6 class="mb-0">💰 Capital en caja (ingresos − egresos)</h6>
   <h2 class="mb-0" style="color:#00628C">{{ capital_caja|moneda }}</h2>
   <small>Total ingresos: {{ total_ingresos|moneda }} — Total egresos: {{ total_gastos|moneda }}</small>
+  <div class="mt-2">
+    <small>Facturado por moneda: <strong>COP: {{ fact_por_moneda.COP|moneda }}</strong> · <strong>USD: {{ fact_por_moneda.USD|moneda:'USD' }}</strong> · <strong>EUR: {{ fact_por_moneda.EUR|moneda:'EUR' }}</strong></small>
+  </div>
 </div>
 
 <div class="row">

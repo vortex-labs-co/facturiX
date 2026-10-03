@@ -14,11 +14,12 @@
 <table>
   <thead><tr><th>Concepto</th><th>Valor</th></tr></thead>
   <tbody>
-    <tr><td>{{ factura.concepto }}</td><td>{{ factura.valor|moneda }}</td></tr>
-    <tr class="total-row"><td><strong>TOTAL</strong></td><td><strong>{{ factura.valor|moneda }}</strong></td></tr>
+    <tr><td>{{ factura.concepto }}</td><td>{{ factura.valor|moneda:factura.moneda }}</td></tr>
+    <tr class="total-row"><td><strong>TOTAL</strong></td><td><strong>{{ factura.valor|moneda:factura.moneda }}</strong></td></tr>
   </tbody>
 </table>
 <p>Estado: {{ factura.get_estado_display }}</p>
 {% endblock %}
+
 
 
