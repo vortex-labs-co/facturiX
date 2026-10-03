@@ -1,0 +1,7 @@
+{% extends 'core/factura_pdf.html' %}
+{% block contenido %}
+{{ block.super }}
+<div style="text-align:center; margin-top:25px;">
+  <a href="{% url 'factura_pdf' factura.pk %}" style="background:#B02F00;color:#fff;padding:10px 24px;border-radius:6px;text-decoration:none;font-size:14px;">⬇ Descargar PDF</a>
+</div>
+{% endblock %}

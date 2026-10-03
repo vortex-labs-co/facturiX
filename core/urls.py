@@ -18,6 +18,7 @@ urlpatterns = [
     path('facturas/', views.factura_lista, name='factura_lista'),
     path('facturas/nueva/', views.factura_crear, name='factura_crear'),
     path('facturas/<int:pk>/pdf/', views.factura_pdf, name='factura_pdf'),
+    path('facturas/<int:pk>/vista/', views.factura_vista, name='factura_vista'),
     path('facturas/<int:pk>/enviar/', views.factura_enviar, name='factura_enviar'),
     path('cuentas/', views.cuenta_lista, name='cuenta_lista'),
     path('cuentas/nueva/', views.cuenta_crear, name='cuenta_crear'),

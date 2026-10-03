@@ -14,6 +14,7 @@
       <td>{{ f.fecha_emision }}</td><td>{{ f.get_estado_display }}</td>
       <td>{% if f.enviada_email %}✅{% else %}—{% endif %}</td>
       <td>
+        <a href="{% url 'factura_vista' f.pk %}" class="btn btn-sm btn-outline-success">Vista</a>
         <a href="{% url 'factura_pdf' f.pk %}" class="btn btn-sm btn-outline-light">PDF</a>
         <a href="{% url 'factura_enviar' f.pk %}" class="btn btn-sm btn-outline-info">Enviar</a>
       </td>

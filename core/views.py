@@ -120,6 +120,12 @@ def factura_pdf(request, pk):
 
 
 @login_required
+def factura_vista(request, pk):
+    factura = get_object_or_404(Factura, pk=pk)
+    return render(request, 'core/factura_vista.html', {'factura': factura})
+
+
+@login_required
 def factura_enviar(request, pk):
     factura = get_object_or_404(Factura, pk=pk)
     if request.method == 'POST':
