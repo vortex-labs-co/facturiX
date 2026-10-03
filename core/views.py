@@ -21,7 +21,7 @@ def dashboard(request):
     for m in ['COP', 'USD', 'EUR']:
         fact_por_moneda[m] = Factura.objects.filter(moneda=m).aggregate(t=Sum('valor'))['t'] or 0
     facturas_pendientes = Factura.objects.filter(estado='pendiente').count()
-    # Series mensuales para graficas (ultimos 6 meses)
+    total_facturado = sum(f.valor_cop_estimado for f in Factura.objects.all()) or 0
     from dateutil.relativedelta import relativedelta
     meses = []
     series_fact = []
@@ -30,7 +30,7 @@ def dashboard(request):
     for i in range(5, -1, -1):
         ref = hoy - relativedelta(months=i)
         meses.append(ref.strftime('%m/%Y'))
-        series_fact.append(float(Factura.objects.filter(fecha_emision__month=ref.month, fecha_emision__year=ref.year).aggregate(t=Sum('valor'))['t'] or 0))
+        series_fact.append(float(sum(f.valor_cop_estimado for f in Factura.objects.filter(fecha_emision__month=ref.month, fecha_emision__year=ref.year)) or 0))
         series_gas.append(float(Gasto.objects.filter(fecha__month=ref.month, fecha__year=ref.year).aggregate(t=Sum('valor'))['t'] or 0))
         series_cuentas.append(float(CuentaCobro.objects.filter(fecha__month=ref.month, fecha__year=ref.year).aggregate(t=Sum('valor'))['t'] or 0))
     return render(request, 'dashboard.html', {
@@ -241,7 +241,7 @@ def informe(request):
         gastos = gastos.filter(fecha__lte=hasta)
     return render(request, 'core/informe.html', {
         'facturas': facturas, 'cuentas': cuentas, 'gastos': gastos, 'desde': desde, 'hasta': hasta,
-        'total_facturas': facturas.aggregate(t=Sum('valor'))['t'] or 0,
+        'total_facturas': sum(f.valor_cop_estimado for f in facturas) or 0,
         'total_cuentas': cuentas.aggregate(t=Sum('valor'))['t'] or 0,
         'total_gastos': gastos.aggregate(t=Sum('valor'))['t'] or 0,
         'balance': (facturas.aggregate(t=Sum('valor'))['t'] or 0) - (gastos.aggregate(t=Sum('valor'))['t'] or 0),

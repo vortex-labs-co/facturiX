@@ -1,4 +1,5 @@
 from django.core.exceptions import ValidationError
+from decimal import Decimal
 from django.core.validators import RegexValidator
 from django.db import models
 from django.urls import reverse
@@ -71,6 +72,9 @@ class Factura(models.Model):
     estado = models.CharField(max_length=20, choices=ESTADOS, default='pendiente')
     moneda = models.CharField(max_length=3, default='COP', choices=[('COP', 'COP'), ('USD', 'USD'), ('EUR', 'EUR')])
     pago_validado = models.BooleanField(default=False)
+    pago_verificado_fecha = models.DateTimeField(null=True, blank=True)
+    tasa_cop = models.DecimalField(max_digits=14, decimal_places=2, null=True, blank=True)
+    valor_cop = models.DecimalField(max_digits=16, decimal_places=2, null=True, blank=True)
     enviada_email = models.BooleanField(default=False)
 
     class Meta:
@@ -82,7 +86,19 @@ class Factura(models.Model):
             ultimo = Factura.objects.order_by('-id').first()
             siguiente = (ultimo.id if ultimo else 0) + 1
             self.numero = f'FAC-{siguiente:06d}'
+        # Al validar el pago (verificado en cuenta bancaria) se fija la tasa del momento
+        if self.pago_validado and self.valor_cop is None:
+            from django.utils import timezone
+            from .tasas import tasa_a_cop
+            self.tasa_cop = tasa_a_cop(self.moneda)
+            self.valor_cop = (self.valor * self.tasa_cop).quantize(Decimal('0.01'))
+            self.pago_verificado_fecha = timezone.now()
         super().save(*args, **kwargs)
+
+    @property
+    def valor_cop_estimado(self):
+        """Valor en COP usado para estadísticas: verificado si existe, si no el valor sin convertir."""
+        return self.valor_cop if self.valor_cop is not None else self.valor
 
     def __str__(self):
         return self.numero
