@@ -10,6 +10,12 @@
 </div>
 <p>Facturas pendientes: <a href="{% url 'factura_lista' %}"><strong>{{ facturas_pendientes }}</strong></a></p>
 
+<div class="card p-3 mb-4">
+  <h6 class="mb-0">💰 Capital en caja (ingresos − egresos)</h6>
+  <h2 class="mb-0" style="color:#00628C">${{ capital_caja }}</h2>
+  <small>Total ingresos: ${{ total_ingresos }} — Total egresos: ${{ total_gastos }}</small>
+</div>
+
 <div class="row">
   <div class="col-md-8">
     <div class="card p-3">
@@ -25,6 +31,11 @@
   </div>
 </div>
 
+<div class="card p-3 mt-4">
+  <h6 class="mb-3">Relación Ingreso vs Egreso del capital (últimos 6 meses)</h6>
+  <canvas id="chartIngresoEgreso" height="120"></canvas>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 new Chart(document.getElementById('chartBarras'), {
@@ -35,6 +46,16 @@ new Chart(document.getElementById('chartBarras'), {
       { label: 'Facturado', data: {{ series_fact|safe }}, backgroundColor: '#00628C' },
       { label: 'Cuentas de cobro', data: {{ series_cuentas|safe }}, backgroundColor: '#B02F00' },
       { label: 'Gastos', data: {{ series_gas|safe }}, backgroundColor: '#565E74' },
+    ]
+  }
+});
+new Chart(document.getElementById('chartIngresoEgreso'), {
+  type: 'line',
+  data: {
+    labels: {{ meses|safe }},
+    datasets: [
+      { label: 'Ingresos (facturado + cuentas)', data: {{ series_fact|safe }}.map((v,i)=>v+{{ series_cuentas|safe }}[i]), borderColor: '#00628C', backgroundColor: '#00628C33', fill: true, tension: .3 },
+      { label: 'Egresos (gastos)', data: {{ series_gas|safe }}, borderColor: '#B02F00', backgroundColor: '#B02F0033', fill: true, tension: .3 },
     ]
   }
 });

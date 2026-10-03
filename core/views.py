@@ -37,6 +37,8 @@ def dashboard(request):
         'rendimiento': total_facturado - total_gastos,
         'facturas_pendientes': facturas_pendientes,
         'meses': meses, 'series_fact': series_fact, 'series_gas': series_gas, 'series_cuentas': series_cuentas,
+        'capital_caja': total_facturado - total_gastos,
+        'total_ingresos': total_facturado + total_cobrado,
     })
 
 
