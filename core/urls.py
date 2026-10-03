@@ -26,5 +26,6 @@ urlpatterns = [
     path('cuentas/<int:pk>/vista/', views.cuenta_vista, name='cuenta_vista'),
     path('gastos/', views.gasto_lista, name='gasto_lista'),
     path('gastos/nuevo/', views.gasto_crear, name='gasto_crear'),
+    path('gastos/<int:pk>/vista/', views.gasto_vista, name='gasto_vista'),
     path('informe/', views.informe, name='informe'),
 ]

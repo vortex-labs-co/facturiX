@@ -181,6 +181,15 @@ def cuenta_vista(request, pk):
 
 
 @login_required
+def gasto_vista(request, pk):
+    gasto = get_object_or_404(Gasto, pk=pk)
+    url = gasto.archivo.url
+    es_pdf = url.lower().endswith('.pdf')
+    es_imagen = url.lower().endswith(('.png', '.jpg', '.jpeg', '.gif'))
+    return render(request, 'core/gasto_vista.html', {'gasto': gasto, 'es_pdf': es_pdf, 'es_imagen': es_imagen})
+
+
+@login_required
 def gasto_lista(request):
     gastos = Gasto.objects.all()
     return render(request, 'core/gasto_lista.html', {'gastos': gastos})
