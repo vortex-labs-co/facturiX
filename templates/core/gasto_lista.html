@@ -8,7 +8,7 @@
 <table class="table table-hover">
   <thead><tr><th>Descripción</th><th>Concepto</th><th>Valor</th><th>Fecha</th><th>Archivo</th></tr></thead>
   <tbody>
-  {% for g in gastos %}<tr><td>{{ g.descripcion }}</td><td>{{ g.concepto }}</td><td>{{ g.valor|moneda:g.moneda }}</td><td>{{ g.fecha }}</td><td><a href="{% url 'gasto_vista' g.pk %}" class="btn btn-sm btn-outline-success">Vista</a> <a href="{{ g.archivo.url }}" class="btn btn-sm btn-outline-light">Ver</a></td></tr>
+  {% for g in gastos %}<tr><td>{{ g.descripcion }}</td><td>{{ g.concepto }}</td><td>{{ g.valor|moneda:g.moneda }}</td><td>{{ g.fecha }}</td><td>{% if g.archivo %}<a href="{% url 'gasto_vista' g.pk %}" class="btn btn-sm btn-outline-success">Vista</a> <a href="{{ g.archivo.url }}" class="btn btn-sm btn-outline-light">Ver</a>{% else %}<span class="text-muted">Sin archivo</span>{% endif %}</td></tr>
   {% empty %}<tr><td colspan="4">Sin gastos</td></tr>{% endfor %}
   </tbody>
 </table>

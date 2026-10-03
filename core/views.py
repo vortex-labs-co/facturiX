@@ -193,7 +193,7 @@ def cuenta_crear(request):
 @login_required
 def cuenta_vista(request, pk):
     cuenta = get_object_or_404(CuentaCobro, pk=pk)
-    url = cuenta.archivo.url
+    url = cuenta.archivo.url if cuenta.archivo else ''
     es_pdf = url.lower().endswith('.pdf')
     es_imagen = url.lower().endswith(('.png', '.jpg', '.jpeg', '.gif'))
     return render(request, 'core/cuenta_vista.html', {'cuenta': cuenta, 'es_pdf': es_pdf, 'es_imagen': es_imagen})
@@ -202,7 +202,7 @@ def cuenta_vista(request, pk):
 @login_required
 def gasto_vista(request, pk):
     gasto = get_object_or_404(Gasto, pk=pk)
-    url = gasto.archivo.url
+    url = gasto.archivo.url if gasto.archivo else ''
     es_pdf = url.lower().endswith('.pdf')
     es_imagen = url.lower().endswith(('.png', '.jpg', '.jpeg', '.gif'))
     return render(request, 'core/gasto_vista.html', {'gasto': gasto, 'es_pdf': es_pdf, 'es_imagen': es_imagen})

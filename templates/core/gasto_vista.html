@@ -2,7 +2,7 @@
 {% block content %}
 <h4>Previsualizar: {{ gasto.descripcion }}</h4>
 <p>Valor: {{ gasto.valor|moneda:gasto.moneda }} — Fecha: {{ gasto.fecha }} — Concepto: {{ gasto.concepto }}</p>
-{% if es_pdf %}
+{% if gasto.archivo %}{% if es_pdf %}
   <embed src="{{ gasto.archivo.url }}" type="application/pdf" width="100%" height="600px">
 {% elif es_imagen %}
   <img src="{{ gasto.archivo.url }}" class="img-fluid" alt="gasto">
@@ -10,6 +10,7 @@
   <div class="alert alert-info">Vista previa no disponible para este tipo de archivo.</div>
 {% endif %}
 <a href="{{ gasto.archivo.url }}" download class="btn btn-primary mt-3">⬇ Descargar</a>
+{% else %}<div class="alert alert-warning">Sin archivo adjunto.</div>{% endif %}
 <a href="{% url 'gasto_lista' %}" class="btn btn-secondary mt-3">Volver</a>
 <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary mt-3">Inicio</a>
 {% endblock %}

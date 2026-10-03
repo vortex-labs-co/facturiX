@@ -127,7 +127,7 @@ class CuentaCobro(models.Model):
     descripcion = models.CharField(max_length=300)
     valor = models.DecimalField(max_digits=14, decimal_places=2)
     fecha = models.DateField()
-    archivo = models.FileField(upload_to='cuentas/')
+    archivo = models.FileField(upload_to='cuentas/', blank=True, null=True)
     moneda = models.CharField(max_length=3, default='COP', choices=[('COP', 'COP'), ('USD', 'USD'), ('EUR', 'EUR')])
     creado = models.DateTimeField(auto_now_add=True)
 
@@ -144,7 +144,7 @@ class Gasto(models.Model):
     concepto = models.CharField(max_length=200, blank=True, verbose_name='Concepto')
     valor = models.DecimalField(max_digits=14, decimal_places=2)
     fecha = models.DateField()
-    archivo = models.FileField(upload_to='gastos/')
+    archivo = models.FileField(upload_to='gastos/', blank=True, null=True)
     moneda = models.CharField(max_length=3, default='COP', choices=[('COP', 'COP'), ('USD', 'USD'), ('EUR', 'EUR')])
     creado = models.DateTimeField(auto_now_add=True)
 
